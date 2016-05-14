@@ -1,0 +1,89 @@
+<html ng-app="universityApp">
+<head><title></title>
+	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+	<link rel="stylesheet" href="CSS/style.css">
+</head>
+
+<body ng-controller="MainCtrl as ctrl">
+<div class="header">
+	<div class="header-title">uWaterloo Hub</div>
+	<div class="header-weather">
+		<span class="glyphicon glyphicon-cloud" style="font-size: 58px; color: white;"></span>
+		<span style="margin-left: 10px;">
+			<b>Temperature:</b> {{ctrl.temp}}C <br/>
+			<b>Min:</b> {{ctrl.minTemp}}C, <b>Max:</b> {{ctrl.maxTemp}}C
+		</span>
+	</div>
+</div>
+<div class="body">
+	<div class="courses">
+		<h3>Courses</h3><br/>
+		<div class="course-dropdowns">
+			Select subject:
+			<select ng-model="ctrl.selectedSubject" ng-options="c.code for c in ctrl.subjects" ng-change="ctrl.afterSubjectSelect()">
+			</select>
+			<span ng-show="ctrl.catalogVisible" style="margin-left: 20px">Catalog:
+				<select ng-model="ctrl.selectedCatalog" ng-options="c.catalog_number for c in ctrl.subject" ng-change="ctrl.afterCatalogSelect()">
+				</select>
+			</span>
+		</div>
+		
+		<div class="course-description" ng-show="ctrl.courseVisible">
+			<div class="course-heading">
+				<a href="{{ctrl.subjectDetails.url}}" target="_blank">
+					{{ctrl.subjectDetails.title}}
+				</a>
+				 &nbsp; &nbsp; &nbsp; Offered in <span ng-repeat="term in ctrl.subjectDetails.terms_offered">{{term}} </span>
+				 &nbsp; &nbsp; &nbsp; <b>Units:</b> {{ctrl.subjectDetails.units}}<br/>
+				 <b>Prerequisites:</b> {{ctrl.subjectPrerequisites}}, <b>Antirequisites:</b> {{ctrl.subjectAntirequisites}}
+			</div>
+			<div class="course-details"><b>Description:</b> {{ctrl.subjectDetails.description}}</div>
+		</div>
+	</div>
+	<div class="extra-info">
+		<div class="food">
+			<span class="food-heading"><h3>Food Outlets</h3></span>
+			<div class="food-scrollable">
+				<span ng-repeat="(foodServices, details) in ctrl.foodServices">
+				<div id="outlet-{{details.outlet_id}}" ng-click="ctrl.displayDescription(details.outlet_id)" class="food-details">
+					<div class="food-logo"><img ng-src="{{details.logo}}"></div>
+					<div class="food-name">{{details.outlet_name}}</div>
+					<div id="outlet-description-{{details.outlet_id}}" class="food-description">{{details.description}}</div><br/>
+				</div>
+				<br/>
+			</span>
+			</div>
+		</div>
+		<div class="events">
+			<h3>Events</h3>
+			<div class="events-scrollable">
+				<div class="event-details" ng-repeat="(events, details) in ctrl.recentEvents">
+				<a href="{{details.link}}" target="_blank">
+					<div class="event-heading">{{details.title}}</div>
+				</a>
+				<div class="event-description">
+					<span class="event-site">Site: {{details.site_name}}</span>
+					<span class="event-time">{{details.startDate}}<br/>
+						{{details.startTime}}
+					</span>
+				</div>
+			</div>
+			</div>
+		</div>
+		<div class="news">
+			<h3>News</h3>
+			<div class="news-scrollable">
+				<a href="{{details.link}}" target="_blank" ng-repeat="(news, details) in ctrl.recentNews">
+					<span class="news-details">{{details.title}}</span>
+				</a>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="footer"></div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.19/angular.js"></script>
+<script src="Javascript/uWaterlooHub.js"></script>
+</body>
+</html>
